@@ -8,6 +8,7 @@
 * Install pyspark and other modules:
 
 ```
+conda activate pyspark
 PYSPARK_HADOOP_VERSION=3.2 pip install pyspark[sql] -v
 pip install langdetect pyarrow scikit-learn datasets ipykernel
 ```
