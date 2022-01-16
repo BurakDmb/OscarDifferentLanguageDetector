@@ -17,7 +17,7 @@ spark.conf.set("spark.sql.execution.arrow.pyspark.enabled", "true")
 
 schema = StructType([StructField('features', VectorUDT(),False), StructField('label', DoubleType(),False)])
 
-rescaledData = spark.read.schema(schema=schema).json("dataset_small_rescaled.json")
+rescaledData = spark.read.schema(schema=schema).json("dataset_small_vectorized.json")
 rescaledData.show(10)
 
 (trainingData, testData) = rescaledData.select("label", "features").randomSplit([0.8, 0.2], seed=0)
