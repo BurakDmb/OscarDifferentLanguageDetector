@@ -6,7 +6,8 @@ from pyspark.ml.feature import HashingTF, IDF, Tokenizer
 
 conf = SparkConf()
 conf.setMaster("local[*]").setAppName("CENG790-Project")
-conf.set("spark.driver.memory", "15g")
+conf.set("spark.driver.memory", "50g")
+conf.set("spark.driver.maxResultSize", "0")
 
 spark = SparkSession.builder.config(conf=conf).getOrCreate()
 spark.conf.set("spark.sql.execution.arrow.pyspark.enabled", "true")
