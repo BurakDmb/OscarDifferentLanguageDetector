@@ -29,23 +29,25 @@ rescaledData.show(10)
 
 # Loading model, predicting test data and calculate evaluation metric by using MulticlassClassificationEvaluator
 
-# Logistic regression
-lrModel = LogisticRegressionModel.load("model_logistic_regression")
+# TODO: Ensemble the model prediction results.
 
-print(lrModel)
-predictedTestData = lrModel.transform(testData)
+# # Logistic regression
+# lrModel = LogisticRegressionModel.load("model_logistic_regression")
 
-evaluator = MulticlassClassificationEvaluator().setLabelCol("label").setPredictionCol("prediction").setMetricName("accuracy")
-evalResults = evaluator.evaluate(predictedTestData)
-print(evalResults)
+# print(lrModel)
+# predictedTestData = lrModel.transform(testData)
+
+# evaluator = MulticlassClassificationEvaluator().setLabelCol("label").setPredictionCol("prediction").setMetricName("accuracy")
+# evalResults = evaluator.evaluate(predictedTestData)
+# print(evalResults)
 
 
-# Random Forest
-rfModel = RandomForestClassificationModel.load("model_random_forest")
+# # Random Forest
+# rfModel = RandomForestClassificationModel.load("model_random_forest")
 
-print(rfModel)
-predictedTestData = rfModel.transform(testData)
+# print(rfModel)
+# predictedTestData = rfModel.transform(testData)
 
-evaluator = MulticlassClassificationEvaluator().setLabelCol("label").setPredictionCol("prediction").setMetricName("accuracy")
-evalResults = evaluator.evaluate(predictedTestData)
-print(evalResults)
+# evaluator = MulticlassClassificationEvaluator().setLabelCol("label").setPredictionCol("prediction").setMetricName("accuracy")
+# evalResults = evaluator.evaluate(predictedTestData)
+# print(evalResults)
