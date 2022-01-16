@@ -1,6 +1,7 @@
 from pyspark.sql import SparkSession
 from pyspark.conf import SparkConf
 from pyspark.ml.evaluation import MulticlassClassificationEvaluator
+from pyspark.ml.classification import RandomForestClassificationModel
 from pyspark.ml.classification import LogisticRegressionModel
 
 from pyspark.ml.linalg import VectorUDT
@@ -14,7 +15,6 @@ conf.set("spark.driver.maxResultSize", "0")
 
 spark = SparkSession.builder.config(conf=conf).getOrCreate()
 spark.conf.set("spark.sql.execution.arrow.pyspark.enabled", "true")
-
 
 # Read vector data.
 # Note: Change dataset name for full dataset prediction.
@@ -34,6 +34,17 @@ lrModel = LogisticRegressionModel.load("model_logistic_regression")
 
 print(lrModel)
 predictedTestData = lrModel.transform(testData)
+
+evaluator = MulticlassClassificationEvaluator().setLabelCol("label").setPredictionCol("prediction").setMetricName("accuracy")
+evalResults = evaluator.evaluate(predictedTestData)
+print(evalResults)
+
+
+# Random Forest
+rfModel = RandomForestClassificationModel.load("model_random_forest")
+
+print(rfModel)
+predictedTestData = rfModel.transform(testData)
 
 evaluator = MulticlassClassificationEvaluator().setLabelCol("label").setPredictionCol("prediction").setMetricName("accuracy")
 evalResults = evaluator.evaluate(predictedTestData)
