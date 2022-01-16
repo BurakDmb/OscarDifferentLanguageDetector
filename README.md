@@ -21,20 +21,26 @@ export LD_LIBRARY_PATH="$HADOOP_HOME/lib/native/:$LD_LIBRARY_PATH"
 
 ## Source codes and explanation:
 
-1- `python generate_and_write_tfidf_dataset_vector.py`
+1- `python detect_ground_truth.py`
+This script generates and saves the ground truth information(in arrow format) by using the langdetect library.
+
+2- `python generate_dataset_json.py`
+This script generates and saves the json file from the ground truth labels.
+
+3- `python generate_and_write_tfidf_dataset_vector.py`
 This script generates tfidf vectors of the dataset by using spark mllib tfidf feature extractors.
 
-2- `python train_logistic_regression_and_save.py`
+4- `python train_logistic_regression_and_save.py`
 This script trains a logistic regression model and trained model is saved into the directory model_logistic_regression
 
-3- `test_logistic_regression.py`
+5- `test_logistic_regression.py`
 This script reads trained model and vectorized dataset from files. It splits training and test by using the same seed used in the training and it evaluates the test dataset.
 
-4- `python train_random_forest_and_save.py`
+6- `python train_random_forest_and_save.py`
 This script trains a logistic regression model and trained model is saved into the directory model_logistic_regression
 
-5- `test_random_forest.py`
+7- `test_random_forest.py`
 This script reads trained model and vectorized dataset from files. It splits training and test by using the same seed used in the training and it evaluates the test dataset.
 
-6- `test_lr_and_rf.py`
+8- `test_lr_and_rf.py`
 This script reads lr and rf trained models and vectorized dataset from files. It splits training and test by using the same seed used in the training and it evaluates the test dataset. It will combine the output of the lr and rf to generate a ensemble predictor where two predictions are OR gated.
