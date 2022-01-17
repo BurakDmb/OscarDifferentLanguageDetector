@@ -23,7 +23,8 @@ rescaledData.show(10)
 
 (trainingData, testData) = rescaledData.select("label", "features").randomSplit([0.8, 0.2], seed=0)
 
-rf = RandomForestClassifier(featuresCol="features", labelCol="label", maxBins=25, maxDepth=4, impurity="entropy")
+# RF classifier with default parameters
+rf = RandomForestClassifier(featuresCol="features", labelCol="label")
 
 # Fit the model
 rfModel = rf.fit(trainingData)

@@ -23,7 +23,8 @@ rescaledData.show(10)
 
 (trainingData, testData) = rescaledData.select("label", "features").randomSplit([0.8, 0.2], seed=0)
 
-lr = LogisticRegression(maxIter=10, regParam=0.3, elasticNetParam=0.8)
+# Logistic regression with default parameters.
+lr = LogisticRegression(featuresCol="features", labelCol="label")
 
 # Fit the model
 lrModel = lr.fit(trainingData)
