@@ -5,6 +5,7 @@ from pyspark.ml.classification import LogisticRegressionModel
 
 from pyspark.ml.linalg import VectorUDT
 from pyspark.sql.types import StructType, StructField, DoubleType
+from pyspark.mllib.evaluation import MulticlassMetrics
 
 # Initialize spark.
 conf = SparkConf()
@@ -20,7 +21,8 @@ spark.conf.set("spark.sql.execution.arrow.pyspark.enabled", "true")
 # Note: Change dataset name for full dataset prediction.
 schema = StructType([StructField('features', VectorUDT(),False), StructField('label', DoubleType(),False)])
 
-rescaledData = spark.read.schema(schema=schema).json("dataset_small_vectorized.json")
+# rescaledData = spark.read.schema(schema=schema).json("dataset_small_vectorized_binary.json")
+rescaledData = spark.read.schema(schema=schema).json("dataset_vectorized_binary.json")
 rescaledData.show(10)
 
 
@@ -38,3 +40,8 @@ predictedTestData = lrModel.transform(testData)
 evaluator = MulticlassClassificationEvaluator().setLabelCol("label").setPredictionCol("prediction").setMetricName("accuracy")
 evalResults = evaluator.evaluate(predictedTestData)
 print(evalResults)
+
+
+
+metrics = MulticlassMetrics(predictedTestData.select("prediction", "label").rdd.map(tuple))
+print(metrics.confusionMatrix().toArray())

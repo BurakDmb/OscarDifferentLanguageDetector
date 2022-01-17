@@ -6,6 +6,8 @@ from pyspark.ml.classification import LogisticRegressionModel
 
 from pyspark.ml.linalg import VectorUDT
 from pyspark.sql.types import StructType, StructField, DoubleType
+from pyspark.mllib.evaluation import MulticlassMetrics
+
 
 # Initialize spark.
 conf = SparkConf()
@@ -20,7 +22,8 @@ spark.conf.set("spark.sql.execution.arrow.pyspark.enabled", "true")
 # Note: Change dataset name for full dataset prediction.
 schema = StructType([StructField('features', VectorUDT(),False), StructField('label', DoubleType(),False)])
 
-rescaledData = spark.read.schema(schema=schema).json("dataset_small_vectorized.json")
+# rescaledData = spark.read.schema(schema=schema).json("dataset_small_vectorized_binary.json")
+rescaledData = spark.read.schema(schema=schema).json("dataset_vectorized_binary.json")
 rescaledData.show(10)
 
 
@@ -30,28 +33,35 @@ rescaledData.show(10)
 # Loading model, predicting test data and calculate evaluation metric by using MulticlassClassificationEvaluator
 
 # Logistic regression
-lrModel = LogisticRegressionModel.load("model_logistic_regression")
-
+lrModel = LogisticRegressionModel.load("model_small_logistic_regression")
 print(lrModel)
 predictedTestDataLR = lrModel.transform(testData)
+metrics1 = MulticlassMetrics(predictedTestDataLR.select("prediction", "label").rdd.map(tuple))
+print("LR Confusion Matrix: ")
+print(metrics1.confusionMatrix().toArray())
 
-evaluator = MulticlassClassificationEvaluator().setLabelCol("label").setPredictionCol("prediction").setMetricName("accuracy")
+predictedTestDataLR = predictedTestDataLR.withColumnRenamed("prediction", "prediction1")
+predictedTestDataLR = predictedTestDataLR.withColumnRenamed("probability", "probability1")
+predictedTestDataLR = predictedTestDataLR.withColumnRenamed("rawPrediction", "rawPrediction1")
 
 # Random Forest
-rfModel = RandomForestClassificationModel.load("model_random_forest")
-
+rfModel = RandomForestClassificationModel.load("model_small_random_forest")
 print(rfModel)
-predictedTestDataRF = rfModel.transform(testData)
+predictedTestDataRF = rfModel.transform(predictedTestDataLR)
+metrics2 = MulticlassMetrics(predictedTestDataRF.select("prediction", "label").rdd.map(tuple))
+print("RF Confusion Matrix: ")
+print(metrics2.confusionMatrix().toArray())
 
-evaluator = MulticlassClassificationEvaluator().setLabelCol("label").setPredictionCol("prediction").setMetricName("accuracy")
+predictedTestDataRF = predictedTestDataRF.withColumnRenamed("prediction", "prediction2")
+predictedTestDataRF = predictedTestDataRF.withColumnRenamed("probability", "probability2")
+predictedTestDataRF = predictedTestDataRF.withColumnRenamed("rawPrediction", "rawPrediction2")
 
 # Combine results
-predictedTestDataLR = predictedTestDataLR.withColumnRenamed("predict", "predict1")
-predictedTestDataRF = predictedTestDataRF.withColumnRenamed("predict", "predict2")
+combinedTestData = predictedTestDataRF
 
-combinedTestData = predictedTestDataLR.join(predictedTestDataRF, predictedTestDataLR.features == predictedTestDataRF.features , "inner")
-combinedTestDataRDD = combinedTestData.rdd.map(lambda x: (x[0], float(bool(x[1]) & bool(x[2])) ))
+combinedResultTestData = combinedTestData.withColumn('prediction', (combinedTestData.prediction1.cast('boolean') & combinedTestData.prediction2.cast('boolean')).cast('double'))\
+    .withColumn('probability', combinedTestData.probability1)
 
-combineResults = combinedTestDataRDD.toDF("features", "label")
-evalResults = evaluator.evaluate(combineResults)
-print(evalResults)
+metrics = MulticlassMetrics(combinedResultTestData.select("prediction", "label").rdd.map(tuple))
+print("LR+RF Confusion Matrix: ")
+print(metrics.confusionMatrix().toArray())

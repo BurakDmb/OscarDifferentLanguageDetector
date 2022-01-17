@@ -31,17 +31,20 @@ This script generates and saves the json file from the ground truth labels.
 3- `python generate_and_write_tfidf_dataset_vector.py`
 This script generates tfidf vectors of the dataset by using spark mllib tfidf feature extractors.
 
-4- `python train_logistic_regression_and_save.py`
+4- `python generate_vectorized_to_binary_labels.py`
+This scripts converts multiclass labels to binary labels where 0 is turkish and 1 is nonturkish.
+
+5- `python train_logistic_regression_and_save.py`
 This script trains a logistic regression model and trained model is saved into the directory model_logistic_regression
 
-5- `test_logistic_regression.py`
+6- `python test_logistic_regression.py`
 This script reads trained model and vectorized dataset from files. It splits training and test by using the same seed used in the training and it evaluates the test dataset.
 
-6- `python train_random_forest_and_save.py`
+7- `python train_random_forest_and_save.py`
 This script trains a logistic regression model and trained model is saved into the directory model_logistic_regression
 
-7- `test_random_forest.py`
+8- `python test_random_forest.py`
 This script reads trained model and vectorized dataset from files. It splits training and test by using the same seed used in the training and it evaluates the test dataset.
 
-8- `test_lr_and_rf.py`
+9- `python test_lr_and_rf.py`
 This script reads lr and rf trained models and vectorized dataset from files. It splits training and test by using the same seed used in the training and it evaluates the test dataset. It will combine the output of the lr and rf to generate a ensemble predictor where two predictions are OR gated.
