@@ -29,25 +29,29 @@ rescaledData.show(10)
 
 # Loading model, predicting test data and calculate evaluation metric by using MulticlassClassificationEvaluator
 
-# TODO: Ensemble the model prediction results.
+# Logistic regression
+lrModel = LogisticRegressionModel.load("model_logistic_regression")
 
-# # Logistic regression
-# lrModel = LogisticRegressionModel.load("model_logistic_regression")
+print(lrModel)
+predictedTestDataLR = lrModel.transform(testData)
 
-# print(lrModel)
-# predictedTestData = lrModel.transform(testData)
+evaluator = MulticlassClassificationEvaluator().setLabelCol("label").setPredictionCol("prediction").setMetricName("accuracy")
 
-# evaluator = MulticlassClassificationEvaluator().setLabelCol("label").setPredictionCol("prediction").setMetricName("accuracy")
-# evalResults = evaluator.evaluate(predictedTestData)
-# print(evalResults)
+# Random Forest
+rfModel = RandomForestClassificationModel.load("model_random_forest")
 
+print(rfModel)
+predictedTestDataRF = rfModel.transform(testData)
 
-# # Random Forest
-# rfModel = RandomForestClassificationModel.load("model_random_forest")
+evaluator = MulticlassClassificationEvaluator().setLabelCol("label").setPredictionCol("prediction").setMetricName("accuracy")
 
-# print(rfModel)
-# predictedTestData = rfModel.transform(testData)
+# Combine results
+predictedTestDataLR = predictedTestDataLR.withColumnRenamed("predict", "predict1")
+predictedTestDataRF = predictedTestDataRF.withColumnRenamed("predict", "predict2")
 
-# evaluator = MulticlassClassificationEvaluator().setLabelCol("label").setPredictionCol("prediction").setMetricName("accuracy")
-# evalResults = evaluator.evaluate(predictedTestData)
-# print(evalResults)
+combinedTestData = predictedTestDataLR.join(predictedTestDataRF, predictedTestDataLR.features == predictedTestDataRF.features , "inner")
+combinedTestDataRDD = combinedTestData.rdd.map(lambda x: (x[0], float(bool(x[1]) & bool(x[2])) ))
+
+combineResults = combinedTestDataRDD.toDF("features", "label")
+evalResults = evaluator.evaluate(combineResults)
+print(evalResults)
