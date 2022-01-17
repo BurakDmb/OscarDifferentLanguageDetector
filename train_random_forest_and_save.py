@@ -8,6 +8,7 @@ from pyspark.sql.types import StructType, StructField, DoubleType
 conf = SparkConf()
 conf.setMaster("local[*]").setAppName("CENG790-Project")
 conf.set("spark.driver.memory", "50g")
+conf.set("spark.executor.memory", "2g")
 conf.set("spark.driver.maxResultSize", "0")
 
 spark = SparkSession.builder.config(conf=conf).getOrCreate()
@@ -24,7 +25,7 @@ rescaledData.show(10)
 (trainingData, testData) = rescaledData.select("label", "features").randomSplit([0.8, 0.2], seed=0)
 
 # RF classifier with default parameters
-rf = RandomForestClassifier(featuresCol="features", labelCol="label")
+rf = RandomForestClassifier(featuresCol="features", labelCol="label", numTrees=200)
 
 # Fit the model
 rfModel = rf.fit(trainingData)
