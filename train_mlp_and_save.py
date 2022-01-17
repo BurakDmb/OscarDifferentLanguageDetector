@@ -29,7 +29,7 @@ rescaledData.show(10)
 # specify layers for the neural network:
 # input layer of size 4 (features), two intermediate of size 5 and 4
 # and output of size 3 (classes)
-layers = [262144, 5, 4, 2]
+layers = [262144, 4, 2]
 
 # create the trainer and set its parameters
 trainer = MultilayerPerceptronClassifier(maxIter=10, layers=layers, blockSize=128, seed=1234)
