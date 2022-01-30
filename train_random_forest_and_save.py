@@ -39,7 +39,8 @@ rescaledData.show(10)
 # RF classifier with default parameters - with class weighting
 rf = RandomForestClassifier(featuresCol="features", labelCol="label", weightCol="weight")
 
-evaluator = BinaryClassificationEvaluator().setLabelCol("label").setRawPredictionCol("prediction").setMetricName("accuracy")
+evaluator = BinaryClassificationEvaluator().setLabelCol("label").setRawPredictionCol("prediction")
+
 paramGrid = ParamGridBuilder()\
     .addGrid(rf.maxBins, [16, 32])\
     .addGrid(rf.maxDepth, [3, 5])\

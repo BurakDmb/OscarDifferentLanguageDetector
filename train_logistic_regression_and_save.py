@@ -37,7 +37,8 @@ rescaledData.show(10)
 # Logistic regression with default parameters and class weighting.
 lr = LogisticRegression(featuresCol="features", labelCol="label", weightCol="weight")
 
-evaluator = BinaryClassificationEvaluator().setLabelCol("label").setRawPredictionCol("prediction").setMetricName("areaUnderROC")
+evaluator = BinaryClassificationEvaluator().setLabelCol("label").setRawPredictionCol("prediction")
+
 paramGrid = ParamGridBuilder()\
     .addGrid(lr.regParam, [0.1, 0.01]) \
     .addGrid(lr.fitIntercept, [False, True])\
