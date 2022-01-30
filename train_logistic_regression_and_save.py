@@ -20,8 +20,8 @@ spark.conf.set("spark.sql.execution.arrow.pyspark.enabled", "true")
 
 schema = StructType([StructField('features', VectorUDT(),False), StructField('label', DoubleType(),False)])
 
-rescaledData = spark.read.schema(schema=schema).json("dataset_small_vectorized_binary.json")
-# rescaledData = spark.read.schema(schema=schema).json("dataset_vectorized_binary.json")
+# rescaledData = spark.read.schema(schema=schema).json("dataset_small_vectorized_binary.json")
+rescaledData = spark.read.schema(schema=schema).json("dataset_vectorized_binary.json")
 
 # Class weightening by creating a weight column and multiplying the 
 # label column(0 for turkish, 1 for non-turkish) by some weighting_constant.
