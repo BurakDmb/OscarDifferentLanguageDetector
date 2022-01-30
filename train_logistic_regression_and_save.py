@@ -25,7 +25,7 @@ rescaledData = spark.read.schema(schema=schema).json("dataset_small_vectorized_b
 
 # Class weightening by creating a weight column and multiplying the 
 # label column(0 for turkish, 1 for non-turkish) by some weighting_constant.
-weighting_constant = 99
+weighting_constant = 9
 rescaledData = rescaledData.withColumn('weight',  (col('label') * weighting_constant) + 1)
 rescaledData.show(10)
 
