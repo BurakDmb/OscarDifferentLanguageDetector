@@ -1,6 +1,6 @@
 from pyspark.sql import SparkSession
 from pyspark.conf import SparkConf
-from pyspark.ml.evaluation import MulticlassClassificationEvaluator
+from pyspark.ml.evaluation import BinaryClassificationEvaluator
 from pyspark.ml.classification import RandomForestClassificationModel
 
 from pyspark.ml.linalg import VectorUDT
@@ -32,7 +32,7 @@ rfModel = RandomForestClassificationModel.load("model_random_forest")
 print(rfModel)
 predictedTestData = rfModel.transform(testData)
 
-evaluator = MulticlassClassificationEvaluator().setLabelCol("label").setPredictionCol("prediction").setMetricName("accuracy")
+evaluator = BinaryClassificationEvaluator().setLabelCol("label").setRawPredictionCol("prediction").setMetricName("areaUnderROC")
 evalResults = evaluator.evaluate(predictedTestData)
 print(evalResults)
 

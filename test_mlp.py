@@ -1,6 +1,5 @@
 from pyspark.sql import SparkSession
 from pyspark.conf import SparkConf
-from pyspark.ml.evaluation import MulticlassClassificationEvaluator
 from pyspark.ml.classification import MultilayerPerceptronClassificationModel
 
 from pyspark.ml.linalg import VectorUDT
@@ -34,6 +33,7 @@ print(mlpModel)
 predictedTestData = mlpModel.transform(testData)
 
 # evaluator = MulticlassClassificationEvaluator().setLabelCol("label").setPredictionCol("prediction").setMetricName("accuracy")
+#evaluator = BinaryClassificationEvaluator().setLabelCol("label").setRawPredictionCol("prediction").setMetricName("areaUnderROC")
 # evalResults = evaluator.evaluate(predictedTestData)
 # print(evalResults)
 

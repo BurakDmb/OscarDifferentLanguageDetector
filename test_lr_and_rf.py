@@ -1,6 +1,5 @@
 from pyspark.sql import SparkSession
 from pyspark.conf import SparkConf
-from pyspark.ml.evaluation import MulticlassClassificationEvaluator
 from pyspark.ml.classification import RandomForestClassificationModel
 from pyspark.ml.classification import LogisticRegressionModel
 
@@ -30,7 +29,6 @@ rescaledData.show(10)
 # Split train and test dataset by using seed=0
 (trainingData, testData) = rescaledData.select("label", "features").randomSplit([0.8, 0.2], seed=0)
 
-# Loading model, predicting test data and calculate evaluation metric by using MulticlassClassificationEvaluator
 
 # Logistic regression
 lrModel = LogisticRegressionModel.load("model_small_logistic_regression")
