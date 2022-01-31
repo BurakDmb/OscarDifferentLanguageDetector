@@ -10,9 +10,9 @@ from pyspark.ml.evaluation import MulticlassClassificationEvaluator
 
 
 conf = SparkConf()
-conf.setMaster("local[*]").setAppName("CENG790-Project")
+conf.setMaster("local[12]").setAppName("CENG790-Project")
 conf.set("spark.driver.memory", "50g")
-conf.set("spark.driver.maxResultSize", "0")
+# conf.set("spark.driver.maxResultSize", "0")
 
 spark = SparkSession.builder.config(conf=conf).getOrCreate()
 spark.conf.set("spark.sql.execution.arrow.pyspark.enabled", "true")
@@ -32,7 +32,7 @@ rescaledData.show(10)
 layers = [262144, 4, 2]
 
 # create the trainer and set its parameters
-trainer = MultilayerPerceptronClassifier(maxIter=10, layers=layers, blockSize=128, seed=1234)
+trainer = MultilayerPerceptronClassifier(maxIter=500, layers=layers, blockSize=128, seed=1234)
 
 # train the model
 mlpModel = trainer.fit(trainingData)

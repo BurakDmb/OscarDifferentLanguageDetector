@@ -42,9 +42,10 @@ rf = RandomForestClassifier(featuresCol="features", labelCol="label", weightCol=
 evaluator = BinaryClassificationEvaluator().setLabelCol("label").setRawPredictionCol("prediction")
 
 paramGrid = ParamGridBuilder()\
-    .addGrid(rf.maxBins, [16, 32])\
+    .addGrid(rf.maxBins, [8, 16])\
     .addGrid(rf.maxDepth, [3, 5])\
-    .addGrid(rf.numTrees, [2, 20, 30])\
+    .addGrid(rf.numTrees, [2, 10, 20])\
+    .addGrid(rf.subsamplingRate, [0.1, 0.2])\
     .build()
 
 tvs = TrainValidationSplit(estimator=rf,
