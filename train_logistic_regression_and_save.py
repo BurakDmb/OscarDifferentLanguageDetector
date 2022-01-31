@@ -25,7 +25,7 @@ rescaledData = spark.read.schema(schema=schema).json("dataset_vectorized_binary.
 
 # Class weightening by creating a weight column and multiplying the 
 # label column(0 for turkish, 1 for non-turkish) by some weighting_constant.
-weighting_constant = 9
+weighting_constant = 4
 rescaledData = rescaledData.withColumn('weight',  (col('label') * weighting_constant) + 1)
 rescaledData.show(10)
 
@@ -40,9 +40,9 @@ lr = LogisticRegression(featuresCol="features", labelCol="label", weightCol="wei
 evaluator = BinaryClassificationEvaluator().setLabelCol("label").setRawPredictionCol("prediction")
 
 paramGrid = ParamGridBuilder()\
-    .addGrid(lr.regParam, [0.1, 0.01]) \
+    .addGrid(lr.regParam, [0.1, 0.01, 0.001]) \
     .addGrid(lr.fitIntercept, [False, True])\
-    .addGrid(lr.elasticNetParam, [0.0, 1.0])\
+    .addGrid(lr.elasticNetParam, [0.0, 0.5, 1.0])\
     .build()
 
 tvs = TrainValidationSplit(estimator=lr,
