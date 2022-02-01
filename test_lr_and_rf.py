@@ -31,7 +31,7 @@ rescaledData.show(10)
 
 
 # Logistic regression
-lrModel = LogisticRegressionModel.load("model_small_logistic_regression")
+lrModel = LogisticRegressionModel.load("model_logistic_regression")
 print(lrModel)
 predictedTestDataLR = lrModel.transform(testData)
 metrics1 = MulticlassMetrics(predictedTestDataLR.select("prediction", "label").rdd.map(tuple))
@@ -43,7 +43,7 @@ predictedTestDataLR = predictedTestDataLR.withColumnRenamed("probability", "prob
 predictedTestDataLR = predictedTestDataLR.withColumnRenamed("rawPrediction", "rawPrediction1")
 
 # Random Forest
-rfModel = RandomForestClassificationModel.load("model_small_random_forest")
+rfModel = RandomForestClassificationModel.load("model_random_forest")
 print(rfModel)
 predictedTestDataRF = rfModel.transform(predictedTestDataLR)
 metrics2 = MulticlassMetrics(predictedTestDataRF.select("prediction", "label").rdd.map(tuple))
