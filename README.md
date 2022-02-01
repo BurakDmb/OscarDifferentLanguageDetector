@@ -2,7 +2,7 @@
 
 ## Installation:
 
-* Create a virtual environment:
+* Create a virtual environment by using conda:
 `conda create -n pyspark python=3.8`
 
 * Install pyspark and other modules:
@@ -48,3 +48,15 @@ This script reads trained model and vectorized dataset from files. It splits tra
 
 9- `python test_lr_and_rf.py`
 This script reads lr and rf trained models and vectorized dataset from files. It splits training and test by using the same seed used in the training and it evaluates the test dataset. It will combine the output of the lr and rf to generate a ensemble predictor where two predictions are OR gated.
+
+10- `python train_mlp_and_save.py`
+This script trains a multi layer perceptron model and trained model is saved into the directory model_mlp
+
+11- `python test_mlp.py`
+This script reads trained model and vectorized dataset from files. It splits training and test by using the same seed used in the training and it evaluates the test dataset.
+
+12- `python train_k_means_and_save.py`
+This script trains a k means algorithm and trained model is saved into the directory model_k_means*
+
+13- `python test_k_means.py`
+This script reads trained model and vectorized dataset from files. It splits training and test by using the same seed used in the training and it evaluates the test dataset.
