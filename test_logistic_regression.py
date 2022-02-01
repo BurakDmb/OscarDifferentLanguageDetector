@@ -35,6 +35,10 @@ rescaledData.show(10)
 lrModel = LogisticRegressionModel.load("model_logistic_regression")
 
 print(lrModel)
+print(lrModel.getRegParam())
+print(lrModel.getFitIntercept())
+print(lrModel.getElasticNetParam())
+
 predictedTestData = lrModel.transform(testData)
 
 evaluator = BinaryClassificationEvaluator().setLabelCol("label").setRawPredictionCol("prediction").setMetricName("areaUnderROC")

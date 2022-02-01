@@ -30,6 +30,9 @@ rescaledData.show(10)
 mlpModel = MultilayerPerceptronClassificationModel.load("model_mlp")
 
 print(mlpModel)
+print(mlpModel.getLayers())
+print(mlpModel.getStepSize())
+
 predictedTestData = mlpModel.transform(testData)
 
 # evaluator = MulticlassClassificationEvaluator().setLabelCol("label").setPredictionCol("prediction").setMetricName("accuracy")

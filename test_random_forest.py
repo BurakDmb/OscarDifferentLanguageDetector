@@ -30,6 +30,11 @@ rescaledData.show(10)
 rfModel = RandomForestClassificationModel.load("model_random_forest")
 
 print(rfModel)
+print(rfModel.getMaxBins())
+print(rfModel.getMaxDepth())
+print(rfModel.getNumTrees)
+print(rfModel.getSubsamplingRate())
+
 predictedTestData = rfModel.transform(testData)
 
 evaluator = BinaryClassificationEvaluator().setLabelCol("label").setRawPredictionCol("prediction").setMetricName("areaUnderROC")
